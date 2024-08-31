@@ -5,7 +5,7 @@ import SortListView from './view/sort-list-view';
 import PointListView from './view/point-list-view';
 import PointItemView from './view/point-item-view';
 import MessageView from './view/message-view';
-import PointFormView from './view/point-form-view';
+import EditPointFormView from './view/edit-point-form-view';
 
 export default class GeneralPresenter {
   constructor({ pageHeaderContainer, pageMainContainer }) {
@@ -27,7 +27,11 @@ export default class GeneralPresenter {
     render(new FilterListView(), filterListContainer, RenderPosition.BEFOREEND);
     render(new SortListView(), contentContainer, RenderPosition.BEFOREEND);
     render(pointListComponent, contentContainer, RenderPosition.BEFOREEND);
-    render(new PointFormView, pointListComponent.getElement(), RenderPosition.BEFOREEND);
+    render(
+      new EditPointFormView(),
+      pointListComponent.getElement(),
+      RenderPosition.BEFOREEND
+    );
     for (let i = 1; i < 4; i++) {
       render(
         new PointItemView(),
