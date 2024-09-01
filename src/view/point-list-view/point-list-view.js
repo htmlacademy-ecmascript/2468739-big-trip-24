@@ -1,8 +1,5 @@
-import { createElement } from '../render';
-
-function createPointListTemplate() {
-  return '<ul class="trip-events__list"></ul>';
-}
+import { createElement } from '../../render';
+import { createPointListTemplate } from './template';
 
 export default class PointListView {
   getTemplate() {

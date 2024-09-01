@@ -1,4 +1,4 @@
-import GeneralPresenter from './general-presenter';
+import GeneralPresenter from '../src/presenter/general-presenter';
 
 const pageHeaderElement = document.querySelector('.page-header');
 const pageMainElement = document.querySelector('.page-main');

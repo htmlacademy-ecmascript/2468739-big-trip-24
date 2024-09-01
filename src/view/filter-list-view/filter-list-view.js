@@ -1,12 +1,8 @@
-import { createElement } from '../render';
-
-function createMessageTemplate() {
-  return '<p class="trip-events__msg">Click New Event to create your first point</p>';
-}
-
+import { createElement } from '../../render';
+import { createFilterListTemplate } from './template';
 export default class FilterListView {
   getTemplate() {
-    return createMessageTemplate();
+    return createFilterListTemplate();
   }
 
   getElement() {
