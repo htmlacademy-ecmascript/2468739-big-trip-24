@@ -6,7 +6,7 @@ function createSortItemTemplate() {
         <input id="sort-${type}" class="trip-sort__input  visually-hidden" type="radio"
         name="trip-sort" value="sort-${type}"
         ${type === 'offer' || type === 'event' ? 'disabled' : ''}
-        ${type === 'price' ? 'checked' : ''}>
+        ${type === 'day' ? 'checked' : ''}>
         <label class="trip-sort__btn" for="sort-${type}">
           ${type === 'offer' ? 'offers' : type}
         </label>
