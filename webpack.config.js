@@ -9,7 +9,7 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     clean: true,
   },
-  devtool: 'source-map',
+  devtool: 'eval-cheap-source-map',
   plugins: [
       new HtmlPlugin({template: 'public/index.html'}),
       new CopyPlugin({
@@ -34,7 +34,11 @@ module.exports = {
             presets: ['@babel/preset-env']
           },
         }
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
     ]
   }
 }
