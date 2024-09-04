@@ -7,20 +7,20 @@ import { createOfferBlockTemplate } from '../common-templates/offer-block-templa
 
 function createNewPointFormTemplate() {
   return `<form class="event event--edit" action="#" method="post">
-                <header class="event__header">
-                  ${createEventTypeChoosingTemplate()}
-                  ${createDestinationChoosingTemplate()}
-                  ${createEventTimeTemplate()}
-                  ${createEventPriceTemplate()}
+            <header class="event__header">
+              ${createEventTypeChoosingTemplate()}
+              ${createDestinationChoosingTemplate()}
+              ${createEventTimeTemplate()}
+              ${createEventPriceTemplate()}
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Cancel</button>
-                </header>
-                <section class="event__details">
-                  ${createOfferBlockTemplate()}
-                  ${createDestinationBlockTemplate()}
-                </section>
-              </form>`;
+              <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+              <button class="event__reset-btn" type="reset">Cancel</button>
+            </header>
+            <section class="event__details">
+              ${createOfferBlockTemplate()}
+              ${createDestinationBlockTemplate()}
+            </section>
+          </form>`;
 }
 
 export {
