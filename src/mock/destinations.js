@@ -39,6 +39,8 @@ const destinations = [
   },
 ];
 
+const getDestinations = () => destinations;
+
 export {
-  destinations,
+  getDestinations,
 };

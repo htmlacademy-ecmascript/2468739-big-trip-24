@@ -7,14 +7,20 @@ import PointItemView from '../view/point-item-view/point-item-view';
 import MessageView from '../view/message-view/message-view';
 import EditPointFormView from '../view/edit-point-form-view/edit-point-form-view';
 import NewPointFormView from '../view/new-point-form-view/new-point-form-view';
+import { getElementByProperty } from '../utils';
 
 export default class GeneralPresenter {
-  constructor({ pageHeaderContainer, pageMainContainer }) {
+  constructor({ pageHeaderContainer, pageMainContainer, generalModel }) {
     this.pageHeaderContainer = pageHeaderContainer;
     this.pageMainContainer = pageMainContainer;
+    this.generalModel = generalModel;
   }
 
   init() {
+    this.points = this.generalModel.getPoints();
+    this.destinations = this.generalModel.getDestinations();
+    this.offers = this.generalModel.getOffers();
+
     const tripInfoContainer =
       this.pageHeaderContainer.querySelector('.trip-main');
     const filterListContainer = this.pageHeaderContainer.querySelector(
@@ -38,9 +44,13 @@ export default class GeneralPresenter {
       pointListComponent.getElement(),
       RenderPosition.BEFOREEND
     );
-    for (let i = 1; i < 4; i++) {
+    for (let i = 0; i < 3; i++) {
+      const destinationName = getElementByProperty(this.destinations, 'id' , this.points[i].destination).name;
+      const allTypeOffers = getElementByProperty(this.offers, 'type', this.points[i].type).offers;
+      const pointOffers = allTypeOffers.filter((offer) => this.points[i].offers.includes(offer.id));
+
       render(
-        new PointItemView(),
+        new PointItemView({ ...this.points[i], destination: destinationName, offers: pointOffers }),
         pointListComponent.getElement(),
         RenderPosition.BEFOREEND
       );

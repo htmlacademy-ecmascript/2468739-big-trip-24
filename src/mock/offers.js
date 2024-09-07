@@ -17,6 +17,11 @@ const offers = [
         title: 'Upgrade bus',
         price: 130,
       },
+      {
+        id: 'b4c3e4e6-9053-42ce-b747-e281314baa37',
+        title: 'Upgrade №2 bus',
+        price: 135,
+      },
     ],
   },
   {
@@ -76,6 +81,8 @@ const offers = [
   },
 ];
 
+const getOffers = () => offers;
+
 export {
-  offers,
+  getOffers,
 };
