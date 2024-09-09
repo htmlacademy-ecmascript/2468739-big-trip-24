@@ -1,4 +1,7 @@
-import { DATE_FORMAT, DateTimeFormat, FAVORITE_CLASS_NAME, TIME_FORMAT } from '../../constants';
+import {
+  DateTimeFormat,
+  FAVORITE_CLASS_NAME,
+} from '../../constants';
 import { getDurationEvent, humanizeDate } from '../../utils';
 
 function createEventDateTemplate(humanizedDate, humanizedEventDateTime) {
@@ -20,9 +23,9 @@ function createEventSheduleTemplate(
 ) {
   return `<div class="event__schedule">
             <p class="event__time">
-              <time class="event__start-time" datetime="${DateTimeFormat.SHEDULE_EVENT}">${humanizedStartTime}</time>
+              <time class="event__start-time" datetime="${DateTimeFormat.POINT_SHEDULE_EVENT}">${humanizedStartTime}</time>
                 &mdash;
-              <time class="event__end-time" datetime="${DateTimeFormat.SHEDULE_EVENT}">${humanizedEndTime}</time>
+              <time class="event__end-time" datetime="${DateTimeFormat.POINT_SHEDULE_EVENT}">${humanizedEndTime}</time>
             </p>
             <p class="event__duration">${durationEvent}</p>
           </div>`;
@@ -34,7 +37,7 @@ function createEventPriceTemplate(basePrice) {
           </p>`;
 }
 
-function createEventOfferTemplate({title, price}) {
+function createEventOfferTemplate({ title, price }) {
   return `<li class="event__offer">
             <span class="event__offer-title">${title}</span>
               &plus;&euro;&nbsp;
@@ -50,7 +53,9 @@ function createEventOffersTemplate(offers) {
 }
 
 function createEventFavoriteButtonTemplate(isFavorite) {
-  return `<button class="event__favorite-btn ${isFavorite ? FAVORITE_CLASS_NAME : ''}" type="button">
+  return `<button class="event__favorite-btn ${
+    isFavorite ? FAVORITE_CLASS_NAME : ''
+  }" type="button">
             <span class="visually-hidden">Add to favorite</span>
               <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
                 <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -65,19 +70,23 @@ function createEventRollupButtonTemplate() {
 }
 
 function createPointItemTemplate({ pointData }) {
-  const { basePrice, dateFrom, dateTo, type, destination, offers, isFavorite } = pointData;
+  const { basePrice, dateFrom, dateTo, type, destination, offers, isFavorite } =
+    pointData;
 
-  const humanizedDate = humanizeDate(dateFrom, DATE_FORMAT);
-  const humanizedEventDateTime = humanizeDate(dateFrom, DateTimeFormat.EVENT);
-  const humanizedStartTime = humanizeDate(dateFrom, TIME_FORMAT);
-  const humanizedEndTime = humanizeDate(dateTo, TIME_FORMAT);
+  const humanizedDate = humanizeDate(dateFrom, DateTimeFormat.DATE_FORMAT);
+  const humanizedEventDateTime = humanizeDate(
+    dateFrom,
+    DateTimeFormat.POINT_EVENT
+  );
+  const humanizedStartTime = humanizeDate(dateFrom, DateTimeFormat.TIME_FORMAT);
+  const humanizedEndTime = humanizeDate(dateTo, DateTimeFormat.TIME_FORMAT);
   const durationEvent = getDurationEvent(dateFrom, dateTo);
 
   return `<li class="trip-events__item">
             <div class="event">
               ${createEventDateTemplate(humanizedDate, humanizedEventDateTime)}
               ${createEventTypeTemplate(type, destination)}
-              ${createEventSheduleTemplate(humanizedStartTime,humanizedEndTime,durationEvent)}
+              ${createEventSheduleTemplate(humanizedStartTime, humanizedEndTime, durationEvent)}
               ${createEventPriceTemplate(basePrice)}
               ${createEventOffersTemplate(offers)}
               ${createEventFavoriteButtonTemplate(isFavorite)}
