@@ -2,8 +2,13 @@ import { createElement } from '../../render';
 import { createPointItemTemplate } from './template';
 
 export default class PointItemView {
+
+  constructor(pointData) {
+    this.pointData = pointData;
+  }
+
   getTemplate() {
-    return createPointItemTemplate();
+    return createPointItemTemplate({ pointData: this.pointData });
   }
 
   getElement() {
