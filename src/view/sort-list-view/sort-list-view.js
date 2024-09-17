@@ -1,20 +1,8 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 import { createSortListTemplate } from './template';
 
-export default class SortListView {
-  getTemplate() {
+export default class SortListView extends AbstractView {
+  get template() {
     return createSortListTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

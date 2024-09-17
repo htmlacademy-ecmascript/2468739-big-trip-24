@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../render';
+import { render, RenderPosition } from '../framework/render';
 import FilterListView from '../view/filter-list-view/filter-list-view';
 import TripInfoView from '../view/trip-info-view/trip-info-view';
 import SortListView from '../view/sort-list-view/sort-list-view';
@@ -69,12 +69,12 @@ export default class GeneralPresenter {
           allOffers: allTypeRandomPointOffersWithChecked,
         },
       }),
-      pointListComponent.getElement(),
+      pointListComponent.element,
       RenderPosition.BEFOREEND
     );
     render(
       new NewPointFormView({ pointData: POINT_BLANK }),
-      pointListComponent.getElement(),
+      pointListComponent.element,
       RenderPosition.BEFOREEND
     );
     for (let i = 0; i < 3; i++) {
@@ -98,7 +98,7 @@ export default class GeneralPresenter {
           destination: destinationName,
           offers: pointOffers,
         }),
-        pointListComponent.getElement(),
+        pointListComponent.element,
         RenderPosition.BEFOREEND
       );
     }

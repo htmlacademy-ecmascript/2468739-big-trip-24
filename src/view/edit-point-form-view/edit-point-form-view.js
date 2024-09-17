@@ -1,25 +1,14 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 import { createEditPointFormTemplate } from './template';
 
-export default class EditPointFormView {
+export default class EditPointFormView extends AbstractView {
 
   constructor({pointData}) {
+    super();
     this.point = pointData;
   }
 
-  getTemplate() {
+  get template() {
     return createEditPointFormTemplate({ pointData: this.point });
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
