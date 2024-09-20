@@ -1,23 +1,11 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 
 function createMessageTemplate() {
   return '<p class="trip-events__msg">Click New Event to create your first point</p>';
 }
 
-export default class FilterListView {
-  getTemplate() {
+export default class FilterListView extends AbstractView {
+  get template() {
     return createMessageTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

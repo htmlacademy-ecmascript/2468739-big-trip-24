@@ -14,7 +14,7 @@ function createEditPointFormTemplate({ pointData }) {
     dateFrom,
     dateTo,
     basePrice,
-    allOffers,
+    offers,
   } = pointData;
 
   const startDate = humanizeDate(dateFrom, DateTimeFormat.EDIT_POINT);
@@ -32,10 +32,10 @@ function createEditPointFormTemplate({ pointData }) {
                 <span class="visually-hidden">Open event</span>
               </button>
             </header>
-  ${(allOffers.length === 0 && !destination.description && destination.pictures.length === 0)
+  ${(offers.length === 0 && !destination.description && destination.pictures.length === 0)
     ? ''
     : `<section class="event__details">
-              ${createOfferBlockTemplate(allOffers)}
+              ${createOfferBlockTemplate(offers)}
               ${createDestinationBlockTemplate(destination)}
             </section>`}
           </form>`;

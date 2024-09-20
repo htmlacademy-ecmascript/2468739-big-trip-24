@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../render';
+import { render, RenderPosition, replace } from '../framework/render';
 import FilterListView from '../view/filter-list-view/filter-list-view';
 import TripInfoView from '../view/trip-info-view/trip-info-view';
 import SortListView from '../view/sort-list-view/sort-list-view';
@@ -6,102 +6,88 @@ import PointListView from '../view/point-list-view/point-list-view';
 import PointItemView from '../view/point-item-view/point-item-view';
 import MessageView from '../view/message-view/message-view';
 import EditPointFormView from '../view/edit-point-form-view/edit-point-form-view';
-import NewPointFormView from '../view/new-point-form-view/new-point-form-view';
-import { getElementByProperty, getRandomArrayElement } from '../utils';
-import { POINT_BLANK } from '../constants';
+import { getRandomArrayElement } from '../utils';
 
 export default class GeneralPresenter {
+  #pageHeaderContainer = null;
+  #pageMainContainer = null;
+  #generalModel = null;
+  #tripInfoContainer = null;
+  #filterListContainer = null;
+  #contentContainer = null;
+
+  #pointListComponent = new PointListView();
+
   constructor({ pageHeaderContainer, pageMainContainer, generalModel }) {
-    this.pageHeaderContainer = pageHeaderContainer;
-    this.pageMainContainer = pageMainContainer;
-    this.generalModel = generalModel;
+    this.#pageHeaderContainer = pageHeaderContainer;
+    this.#pageMainContainer = pageMainContainer;
+    this.#generalModel = generalModel;
+    this.#tripInfoContainer =
+      this.#pageHeaderContainer.querySelector('.trip-main');
+    this.#filterListContainer = this.#pageHeaderContainer.querySelector(
+      '.trip-controls__filters'
+    );
+    this.#contentContainer =
+      this.#pageMainContainer.querySelector('.trip-events');
   }
 
   getRandomPoint() {
     return getRandomArrayElement(this.points);
   }
 
-  init() {
-    this.points = this.generalModel.getPoints();
+  #renderPoint(pointData) {
+    const onDocumentKeydown = (evt) => {
+      if (evt.key !== 'Escape') {
+        return;
+      }
+      evt.preventDefault();
+      replaceFormToPoint();
+      document.removeEventListener('keydown', onDocumentKeydown);
+    };
 
-    this.destinations = this.generalModel.getDestinations();
-    this.offers = this.generalModel.getOffers();
-
-    const tripInfoContainer =
-      this.pageHeaderContainer.querySelector('.trip-main');
-    const filterListContainer = this.pageHeaderContainer.querySelector(
-      '.trip-controls__filters'
+    const pointItemComponent = new PointItemView(
+      {
+        pointData,
+        onEditClick: () => {
+          replacePointToForm();
+        },
+      }
     );
-    const contentContainer =
-      this.pageMainContainer.querySelector('.trip-events');
-    const pointListComponent = new PointListView();
-
-    render(new TripInfoView(), tripInfoContainer, RenderPosition.AFTERBEGIN);
-    render(new FilterListView(), filterListContainer, RenderPosition.BEFOREEND);
-    render(new SortListView(), contentContainer, RenderPosition.BEFOREEND);
-    render(pointListComponent, contentContainer, RenderPosition.BEFOREEND);
-
-    const randomPoint = this.getRandomPoint();
-    const randomPointDestination = getElementByProperty(
-      this.destinations,
-      'id',
-      randomPoint.destination
-    );
-    const allTypeRandomPointOffers = getElementByProperty(
-      this.offers,
-      'type',
-      randomPoint.type
-    ).offers;
-    const allTypeRandomPointOffersWithChecked = allTypeRandomPointOffers.map(
-      (offer) => {
-        if (randomPoint.offers.includes(offer.id)) {
-          return { ...offer, checked: true };
-        }
-        return { ...offer, checked: false };
+    const editPointFormComponent = new EditPointFormView(
+      {
+        pointData,
+        onFormSubmit: () => {
+          replaceFormToPoint();
+        },
+        onCloseEditClick: () => {
+          replaceFormToPoint();
+        },
       }
     );
 
-    render(
-      new EditPointFormView({
-        pointData: {
-          ...randomPoint,
-          destination: randomPointDestination,
-          allOffers: allTypeRandomPointOffersWithChecked,
-        },
-      }),
-      pointListComponent.getElement(),
-      RenderPosition.BEFOREEND
-    );
-    render(
-      new NewPointFormView({ pointData: POINT_BLANK }),
-      pointListComponent.getElement(),
-      RenderPosition.BEFOREEND
-    );
-    for (let i = 0; i < 3; i++) {
-      const destinationName = getElementByProperty(
-        this.destinations,
-        'id',
-        this.points[i].destination
-      ).name;
-      const allTypeOffers = getElementByProperty(
-        this.offers,
-        'type',
-        this.points[i].type
-      ).offers;
-      const pointOffers = allTypeOffers.filter((offer) =>
-        this.points[i].offers.includes(offer.id)
-      );
-
-      render(
-        new PointItemView({
-          ...this.points[i],
-          destination: destinationName,
-          offers: pointOffers,
-        }),
-        pointListComponent.getElement(),
-        RenderPosition.BEFOREEND
-      );
+    function replacePointToForm() {
+      replace(editPointFormComponent, pointItemComponent);
+      document.addEventListener('keydown', onDocumentKeydown);
     }
-    render(new MessageView(), contentContainer, RenderPosition.BEFOREEND);
+
+    function replaceFormToPoint() {
+      replace(pointItemComponent, editPointFormComponent);
+    }
+
+    render(pointItemComponent, this.#pointListComponent.element);
+  }
+
+  init() {
+    this.points = [...this.#generalModel.points];
+
+    render(new TripInfoView(), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+    render(new FilterListView(), this.#filterListContainer);
+    render(new SortListView(), this.#contentContainer);
+    render(this.#pointListComponent, this.#contentContainer);
+
+    for (let i = 0; i < 3; i++) {
+      this.#renderPoint(this.points[i]);
+    }
+    render(new MessageView(), this.#contentContainer);
   }
 }

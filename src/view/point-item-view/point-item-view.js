@@ -1,25 +1,24 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 import { createPointItemTemplate } from './template';
 
-export default class PointItemView {
+export default class PointItemView extends AbstractView {
+  #handleEditClick = null;
 
-  constructor(pointData) {
+  constructor({pointData, onEditClick}) {
+    super();
     this.pointData = pointData;
+    this.#handleEditClick = onEditClick;
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
   }
 
-  getTemplate() {
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditClick();
+  };
+
+  get template() {
     return createPointItemTemplate({ pointData: this.pointData });
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

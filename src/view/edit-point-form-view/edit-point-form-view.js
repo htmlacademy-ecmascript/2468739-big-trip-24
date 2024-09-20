@@ -1,25 +1,34 @@
-import { createElement } from '../../render';
+import AbstractView from '../../framework/view/abstract-view';
 import { createEditPointFormTemplate } from './template';
 
-export default class EditPointFormView {
+export default class EditPointFormView extends AbstractView {
+  #handleFormSubmit = null;
+  #handleCloseEditClick = null;
 
-  constructor({pointData}) {
+  constructor({pointData, onFormSubmit, onCloseEditClick}) {
+    super();
     this.point = pointData;
+    this.#handleFormSubmit = onFormSubmit;
+    this.element
+      .querySelector('.event__save-btn')
+      .addEventListener('submit', this.#formSubmitHandler);
+    this.#handleCloseEditClick = onCloseEditClick;
+    this.element
+      .querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#closeEditClickHandler);
   }
 
-  getTemplate() {
+  get template() {
     return createEditPointFormTemplate({ pointData: this.point });
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #closeEditClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleCloseEditClick();
+  };
 }

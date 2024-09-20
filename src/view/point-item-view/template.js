@@ -70,6 +70,7 @@ function createEventRollupButtonTemplate() {
 }
 
 function createPointItemTemplate({ pointData }) {
+
   const { basePrice, dateFrom, dateTo, type, destination, offers, isFavorite } =
     pointData;
 
@@ -85,7 +86,7 @@ function createPointItemTemplate({ pointData }) {
   return `<li class="trip-events__item">
             <div class="event">
               ${createEventDateTemplate(humanizedDate, humanizedEventDateTime)}
-              ${createEventTypeTemplate(type, destination)}
+              ${createEventTypeTemplate(type, destination.name)}
               ${createEventSheduleTemplate(humanizedStartTime, humanizedEndTime, durationEvent)}
               ${createEventPriceTemplate(basePrice)}
               ${createEventOffersTemplate(offers)}
