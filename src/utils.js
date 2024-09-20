@@ -34,13 +34,9 @@ const getDurationEvent = (startDate, endDate, unitTime = null) => {
   return convertDuration(durationEvent);
 };
 
-const getElementByProperty = (items, key, value) =>
-  items.find((item) => item[key] === value);
-
 export {
   getRandomArrayElement,
   getRandomNumber,
   humanizeDate,
   getDurationEvent,
-  getElementByProperty,
 };
