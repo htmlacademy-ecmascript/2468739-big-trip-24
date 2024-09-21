@@ -1,4 +1,10 @@
-const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
+const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
 const SORT_TYPES = ['day', 'event', 'time', 'price', 'offer'];
 const EVENT_TYPES = [
   'taxi',
@@ -52,7 +58,7 @@ const MillisecondCount = {
 const FAVORITE_CLASS_NAME = 'event__favorite-btn--active';
 
 export {
-  FILTER_TYPES,
+  FilterType,
   SORT_TYPES,
   EVENT_TYPES,
   POINT_COUNT,

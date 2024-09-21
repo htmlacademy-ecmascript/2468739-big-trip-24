@@ -82,7 +82,7 @@ export default class GeneralPresenter {
     this.points = [...this.#generalModel.points];
 
     render(new TripInfoView(), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
-    render(new FilterListView(), this.#filterListContainer);
+    render(new FilterListView({points: this.points}), this.#filterListContainer);
     render(new SortListView(), this.#contentContainer);
     render(this.#pointListComponent, this.#contentContainer);
 
