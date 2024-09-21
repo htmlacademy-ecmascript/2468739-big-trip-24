@@ -1,5 +1,5 @@
 import { DateTimeFormat } from '../../constants';
-import { humanizeDate } from '../../utils';
+import { humanizeDate } from '../../utils/point';
 import { createDestinationBlockTemplate } from '../common-templates/destination-block-template';
 import { createDestinationChoosingTemplate } from '../common-templates/destination-choosing-template';
 import { createEventPriceTemplate } from '../common-templates/event-price-template';
@@ -8,14 +8,7 @@ import { createEventTypeChoosingTemplate } from '../common-templates/event-type-
 import { createOfferBlockTemplate } from '../common-templates/offer-block-template';
 
 function createEditPointFormTemplate({ pointData }) {
-  const {
-    type,
-    destination,
-    dateFrom,
-    dateTo,
-    basePrice,
-    offers,
-  } = pointData;
+  const { type, destination, dateFrom, dateTo, basePrice, offers } = pointData;
 
   const startDate = humanizeDate(dateFrom, DateTimeFormat.EDIT_POINT);
   const endDate = humanizeDate(dateTo, DateTimeFormat.EDIT_POINT);
@@ -32,12 +25,16 @@ function createEditPointFormTemplate({ pointData }) {
                 <span class="visually-hidden">Open event</span>
               </button>
             </header>
-  ${(offers.length === 0 && !destination.description && destination.pictures.length === 0)
+  ${
+  offers.length === 0 &&
+    !destination.description &&
+    destination.pictures.length === 0
     ? ''
     : `<section class="event__details">
               ${createOfferBlockTemplate(offers)}
               ${createDestinationBlockTemplate(destination)}
-            </section>`}
+            </section>`
+}
           </form>`;
 }
 

@@ -1,8 +1,5 @@
-import {
-  DateTimeFormat,
-  FAVORITE_CLASS_NAME,
-} from '../../constants';
-import { getDurationEvent, humanizeDate } from '../../utils';
+import { DateTimeFormat, FAVORITE_CLASS_NAME } from '../../constants';
+import { getDurationEvent, humanizeDate } from '../../utils/point';
 
 function createEventDateTemplate(humanizedDate, humanizedEventDateTime) {
   return `<time class="event__date" datetime="${humanizedEventDateTime}">${humanizedDate}</time>`;
@@ -70,7 +67,6 @@ function createEventRollupButtonTemplate() {
 }
 
 function createPointItemTemplate({ pointData }) {
-
   const { basePrice, dateFrom, dateTo, type, destination, offers, isFavorite } =
     pointData;
 
@@ -87,7 +83,11 @@ function createPointItemTemplate({ pointData }) {
             <div class="event">
               ${createEventDateTemplate(humanizedDate, humanizedEventDateTime)}
               ${createEventTypeTemplate(type, destination.name)}
-              ${createEventSheduleTemplate(humanizedStartTime, humanizedEndTime, durationEvent)}
+              ${createEventSheduleTemplate(
+    humanizedStartTime,
+    humanizedEndTime,
+    durationEvent
+  )}
               ${createEventPriceTemplate(basePrice)}
               ${createEventOffersTemplate(offers)}
               ${createEventFavoriteButtonTemplate(isFavorite)}
