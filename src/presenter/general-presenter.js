@@ -6,7 +6,7 @@ import PointListView from '../view/point-list-view/point-list-view';
 import PointItemView from '../view/point-item-view/point-item-view';
 import MessageView from '../view/message-view/message-view';
 import EditPointFormView from '../view/edit-point-form-view/edit-point-form-view';
-import { getRandomArrayElement } from '../utils';
+import { getRandomArrayElement } from '../utils/common';
 
 export default class GeneralPresenter {
   #pageHeaderContainer = null;
@@ -61,6 +61,7 @@ export default class GeneralPresenter {
         },
         onCloseEditClick: () => {
           replaceFormToPoint();
+          document.removeEventListener('keydown', onDocumentKeydown);
         },
       }
     );

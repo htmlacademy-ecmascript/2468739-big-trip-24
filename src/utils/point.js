@@ -1,13 +1,8 @@
 import dayjs from 'dayjs';
-import { DurationFormat, MillisecondCount } from './constants';
+import { DurationFormat, MillisecondCount } from '../constants';
 import duration from 'dayjs/plugin/duration';
 
 dayjs.extend(duration);
-
-const getRandomArrayElement = (items) =>
-  items[Math.floor(Math.random() * items.length)];
-
-const getRandomNumber = () => Math.floor(Math.random() * 100);
 
 const humanizeDate = (date, format) => dayjs(date).format(format);
 
@@ -19,7 +14,9 @@ const calculateDuration = (startDate, endDate, unitTime = null) => {
 
 const convertDuration = (durationEvent) => {
   if (durationEvent >= MillisecondCount.DAY) {
-    return dayjs.duration(durationEvent).format(DurationFormat.DAYS_HOURS_MINUTES);
+    return dayjs
+      .duration(durationEvent)
+      .format(DurationFormat.DAYS_HOURS_MINUTES);
   }
 
   if (durationEvent >= MillisecondCount.HOUR) {
@@ -34,9 +31,4 @@ const getDurationEvent = (startDate, endDate, unitTime = null) => {
   return convertDuration(durationEvent);
 };
 
-export {
-  getRandomArrayElement,
-  getRandomNumber,
-  humanizeDate,
-  getDurationEvent,
-};
+export { humanizeDate, getDurationEvent };
