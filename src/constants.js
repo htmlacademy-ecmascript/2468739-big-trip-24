@@ -5,6 +5,10 @@ const FilterType = {
   PAST: 'past',
 };
 
+const MessageType = {
+  NOT_POINT:'Click New Event to create your first point',
+};
+
 const SORT_TYPES = ['day', 'event', 'time', 'price', 'offer'];
 const EVENT_TYPES = [
   'taxi',
@@ -59,6 +63,7 @@ const FAVORITE_CLASS_NAME = 'event__favorite-btn--active';
 
 export {
   FilterType,
+  MessageType,
   SORT_TYPES,
   EVENT_TYPES,
   POINT_COUNT,
