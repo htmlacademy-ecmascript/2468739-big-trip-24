@@ -59,6 +59,11 @@ const MillisecondCount = {
   HOUR: 3600000,
 };
 
+const PointMode = {
+  DEFAULT: 'default',
+  EDIT: 'editing',
+};
+
 const FAVORITE_CLASS_NAME = 'event__favorite-btn--active';
 
 export {
@@ -72,4 +77,5 @@ export {
   DateTimeFormat,
   FAVORITE_CLASS_NAME,
   POINT_BLANK,
+  PointMode,
 };

@@ -1,21 +1,24 @@
-import { render, RenderPosition, replace } from '../framework/render';
+import { render, RenderPosition } from '../framework/render';
 import FilterListView from '../view/filter-list-view/filter-list-view';
 import TripInfoView from '../view/trip-info-view/trip-info-view';
 import SortListView from '../view/sort-list-view/sort-list-view';
 import PointListView from '../view/point-list-view/point-list-view';
-import PointItemView from '../view/point-item-view/point-item-view';
 import MessageView from '../view/message-view/message-view';
-import EditPointFormView from '../view/edit-point-form-view/edit-point-form-view';
-import { getRandomArrayElement } from '../utils/common';
-import { MessageType } from '../constants';
+import { MessageType, POINT_COUNT } from '../constants';
+import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/common';
 
 export default class GeneralPresenter {
   #generalModel = null;
+
   #tripInfoContainer = null;
   #filterListContainer = null;
   #contentContainer = null;
 
   #pointListComponent = new PointListView();
+
+  #points = [];
+  #pointPresenters = new Map();
 
   constructor({
     tripInfoContainer,
@@ -29,69 +32,72 @@ export default class GeneralPresenter {
     this.#contentContainer = contentContainer;
   }
 
-  getRandomPoint() {
-    return getRandomArrayElement(this.points);
-  }
-
-  #renderPoint(pointData) {
-    const onDocumentKeydown = (evt) => {
-      if (evt.key !== 'Escape') {
-        return;
-      }
-      evt.preventDefault();
-      replaceFormToPoint();
-      document.removeEventListener('keydown', onDocumentKeydown);
-    };
-
-    const pointItemComponent = new PointItemView(
-      {
-        pointData,
-        onEditClick: () => {
-          replacePointToForm();
-        },
-      }
-    );
-    const editPointFormComponent = new EditPointFormView(
-      {
-        pointData,
-        onFormSubmit: () => {
-          replaceFormToPoint();
-        },
-        onCloseEditClick: () => {
-          replaceFormToPoint();
-          document.removeEventListener('keydown', onDocumentKeydown);
-        },
-      }
-    );
-
-    function replacePointToForm() {
-      replace(editPointFormComponent, pointItemComponent);
-      document.addEventListener('keydown', onDocumentKeydown);
-    }
-
-    function replaceFormToPoint() {
-      replace(pointItemComponent, editPointFormComponent);
-    }
-
-    render(pointItemComponent, this.#pointListComponent.element);
-  }
-
   init() {
-    this.points = [...this.#generalModel.points];
+    this.#points = [...this.#generalModel.points];
 
-    render(new TripInfoView(), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
-    render(new FilterListView({points: this.points}), this.#filterListContainer);
-    render(new SortListView(), this.#contentContainer);
-    render(this.#pointListComponent, this.#contentContainer);
+    this.#renderTripInfo();
+    this.#renderFilter();
+    this.#renderSort();
 
-    if (!this.points.length) {
-      render(new MessageView({message: MessageType.NOT_POINT}), this.#contentContainer);
+    if (!this.#points.length) {
+      this.#renderMessage();
       return;
     }
 
-    for (let i = 0; i < 3; i++) {
-      this.#renderPoint(this.points[i]);
-    }
-
+    this.#renderPointList();
   }
+
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
+  }
+
+  #renderPoint(pointData) {
+    const pointPresenter = new PointPresenter(
+      {
+        pointContainer: this.#pointListComponent.element,
+        onDataChange: this.#handlePointChange,
+        onModeChange: this.#handleModeChange,
+      }
+    );
+
+    this.#pointPresenters.set(pointData.id, pointPresenter);
+    pointPresenter.init(pointData);
+  }
+
+  #renderPoints(from, to) {
+    this.#points
+      .slice(from, to)
+      .forEach((point) => this.#renderPoint(point));
+  }
+
+  #renderPointList() {
+    render(this.#pointListComponent, this.#contentContainer);
+    this.#renderPoints(0, POINT_COUNT);
+  }
+
+  #renderTripInfo() {
+    render(new TripInfoView(), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderFilter() {
+    render(new FilterListView({points: this.#points}), this.#filterListContainer);
+  }
+
+  #renderSort() {
+    render(new SortListView(), this.#contentContainer);
+  }
+
+  #renderMessage() {
+    render(new MessageView({message: MessageType.NOT_POINT}), this.#contentContainer);
+  }
+
+  #handlePointChange = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
 }
