@@ -31,4 +31,4 @@ const getDurationEvent = (startDate, endDate, unitTime = null) => {
   return convertDuration(durationEvent);
 };
 
-export { humanizeDate, getDurationEvent };
+export { humanizeDate, calculateDuration, getDurationEvent };
