@@ -9,7 +9,14 @@ const MessageType = {
   NOT_POINT:'Click New Event to create your first point',
 };
 
-const SORT_TYPES = ['day', 'event', 'time', 'price', 'offer'];
+const SortType = {
+  DEFAULT: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer',
+};
+
 const EVENT_TYPES = [
   'taxi',
   'bus',
@@ -65,11 +72,12 @@ const PointMode = {
 };
 
 const FAVORITE_CLASS_NAME = 'event__favorite-btn--active';
+const NOT_SORT_TYPE = 'there is no such type of sorting';
 
 export {
   FilterType,
   MessageType,
-  SORT_TYPES,
+  SortType,
   EVENT_TYPES,
   POINT_COUNT,
   MillisecondCount,
@@ -78,4 +86,5 @@ export {
   FAVORITE_CLASS_NAME,
   POINT_BLANK,
   PointMode,
+  NOT_SORT_TYPE,
 };
