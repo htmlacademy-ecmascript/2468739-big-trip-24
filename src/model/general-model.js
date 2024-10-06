@@ -4,12 +4,12 @@ import { getOffers } from '../mock/offers';
 import { getRandomPoint } from '../mock/points';
 
 export default class GeneralModel{
+  #offers = getOffers();
+  #destinations = getDestinations();
   #points = Array.from({length: POINT_COUNT}, () => {
     const randomPoint = getRandomPoint();
-    const destinations = getDestinations();
-    const offers = getOffers();
-    const pointDestination = destinations.find((destination) => destination.id === randomPoint.destination);
-    const pointAllOffers = offers
+    const pointDestination = this.#destinations.find((destination) => destination.id === randomPoint.destination);
+    const pointAllOffers = this.#offers
       .find((offer) => offer.type === randomPoint.type).offers
       .map((offer) => {
         if (randomPoint.offers.includes(offer.id)) {
@@ -23,5 +23,13 @@ export default class GeneralModel{
 
   get points() {
     return this.#points;
+  }
+
+  get offers() {
+    return this.#offers;
+  }
+
+  get destinations() {
+    return this.#destinations;
   }
 }

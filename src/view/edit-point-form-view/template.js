@@ -7,8 +7,8 @@ import { createEventTimeTemplate } from '../common-templates/event-time-template
 import { createEventTypeChoosingTemplate } from '../common-templates/event-type-choosing-template';
 import { createOfferBlockTemplate } from '../common-templates/offer-block-template';
 
-function createEditPointFormTemplate({ pointData }) {
-  const { type, destination, dateFrom, dateTo, basePrice, offers } = pointData;
+function createEditPointFormTemplate({ state }) {
+  const { type, destination, dateFrom, dateTo, basePrice, offers } = state;
 
   const startDate = humanizeDate(dateFrom, DateTimeFormat.EDIT_POINT);
   const endDate = humanizeDate(dateTo, DateTimeFormat.EDIT_POINT);

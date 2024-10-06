@@ -24,6 +24,9 @@ export default class GeneralPresenter {
   #points = [];
   #pointPresenters = new Map();
 
+  #offers = [];
+  #destinations = [];
+
   #sorts = [];
 
   constructor({
@@ -40,6 +43,8 @@ export default class GeneralPresenter {
 
   init() {
     this.#points = [...this.#generalModel.points];
+    this.#offers = [...this.#generalModel.offers];
+    this.#destinations = [...this.#generalModel.destinations];
     this.#sortPoints(SortType.DEFAULT);
     this.#sorts = Object.values(SortType);
 
@@ -74,6 +79,8 @@ export default class GeneralPresenter {
         pointContainer: this.#pointListComponent.element,
         onDataChange: this.#handlePointChange,
         onModeChange: this.#handleModeChange,
+        onPointTypeChange: this.#handlePointTypeChange,
+        onDestinationChange: this.#handleDestinationChange,
       }
     );
 
@@ -127,4 +134,9 @@ export default class GeneralPresenter {
     this.#points = updateItem(this.#points, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
+
+  #handlePointTypeChange = (selectedPointType) => this.#offers.find((offer) => offer.type === selectedPointType).offers;
+
+  #handleDestinationChange = (selectedDestination) => this.#destinations
+    .find((destination) => destination.name === selectedDestination);
 }
