@@ -9,16 +9,20 @@ export default class PointPresenter {
   #pointContainer = null;
   #handleDataChange = null;
   #handleModeChange = null;
+  #handlePointTypeChange = null;
+  #handleDestinationChange = null;
 
   #pointItemComponent = null;
   #editPointFormComponent = null;
 
   #mode = PointMode.DEFAULT;
 
-  constructor({pointContainer, onDataChange, onModeChange}) {
+  constructor({pointContainer, onDataChange, onModeChange, onPointTypeChange, onDestinationChange}) {
     this.#pointContainer = pointContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#handlePointTypeChange = onPointTypeChange;
+    this.#handleDestinationChange = onDestinationChange;
   }
 
   init(pointData) {
@@ -40,6 +44,8 @@ export default class PointPresenter {
         pointData: this.#pointData,
         onFormSubmit: this.#handleFormSubmit,
         onCloseEditClick: this.#handleEditClick,
+        onPointTypeClick: this.#handlePointTypeChange,
+        onDestinationChange: this.#handleDestinationChange,
       }
     );
 
@@ -60,6 +66,7 @@ export default class PointPresenter {
 
   resetView() {
     if (this.#mode !== PointMode.DEFAULT) {
+      this.#editPointFormComponent.reset(this.#pointData);
       this.#replaceFormToPoint();
     }
   }
@@ -92,6 +99,7 @@ export default class PointPresenter {
       return;
     }
 
+    this.#editPointFormComponent.reset(this.#pointData);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = PointMode.DEFAULT;
@@ -106,6 +114,7 @@ export default class PointPresenter {
       return;
     }
     evt.preventDefault();
+    this.#editPointFormComponent.reset(this.#pointData);
     this.#replaceFormToPoint();
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
