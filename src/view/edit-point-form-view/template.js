@@ -1,5 +1,3 @@
-import { DateTimeFormat } from '../../constants';
-import { humanizeDate } from '../../utils/point';
 import { createDestinationBlockTemplate } from '../common-templates/destination-block-template';
 import { createDestinationChoosingTemplate } from '../common-templates/destination-choosing-template';
 import { createEventPriceTemplate } from '../common-templates/event-price-template';
@@ -8,16 +6,13 @@ import { createEventTypeChoosingTemplate } from '../common-templates/event-type-
 import { createOfferBlockTemplate } from '../common-templates/offer-block-template';
 
 function createEditPointFormTemplate({ state }) {
-  const { type, destination, dateFrom, dateTo, basePrice, offers } = state;
-
-  const startDate = humanizeDate(dateFrom, DateTimeFormat.EDIT_POINT);
-  const endDate = humanizeDate(dateTo, DateTimeFormat.EDIT_POINT);
+  const { type, destination, basePrice, offers } = state;
 
   return `<form class="event event--edit" action="#" method="post">
             <header class="event__header">
               ${createEventTypeChoosingTemplate(type)}
               ${createDestinationChoosingTemplate(type, destination)}
-              ${createEventTimeTemplate(startDate, endDate)}
+              ${createEventTimeTemplate()}
               ${createEventPriceTemplate(basePrice)}
               <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
               <button class="event__reset-btn" type="reset">Delete</button>

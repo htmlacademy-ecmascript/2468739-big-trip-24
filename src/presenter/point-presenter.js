@@ -84,6 +84,7 @@ export default class PointPresenter {
   }
 
   #replaceFormToPoint() {
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
     replace(this.#pointItemComponent, this.#editPointFormComponent);
     this.#mode = PointMode.DEFAULT;
   }
@@ -101,7 +102,6 @@ export default class PointPresenter {
 
     this.#editPointFormComponent.reset(this.#pointData);
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
     this.#mode = PointMode.DEFAULT;
   };
 
@@ -116,6 +116,5 @@ export default class PointPresenter {
     evt.preventDefault();
     this.#editPointFormComponent.reset(this.#pointData);
     this.#replaceFormToPoint();
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 }
